@@ -18,7 +18,7 @@ python3 analyze-italy.py
 ## Graphs Generated:
 
 ### Counts in Italy
-![Counts in Italy](/graphs/counts-20200326.png)
+![Counts in Italy](/graphs/counts.png)
 
 ### Positive Ratio in Italy
-![Counts in Italy](/graphs/test-ratio-20200326.png)
+![Counts in Italy](/graphs/test-ratios.png)
