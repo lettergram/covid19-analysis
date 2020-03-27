@@ -8,3 +8,9 @@ Initialize the submodules:
 ```
 git submodule update --init --recursive
 ```
+
+Generate analysis on Italy:
+
+```
+python3 analyze-italy.py
+```
