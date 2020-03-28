@@ -53,11 +53,14 @@ tests = []
 deaths= []
 test_diffs = []
 new_positives = []
-hospitlized = []
+new_hospitalized = []
+hospitalized = []
 new_deaths = []
 positive_ratio = []
+hospitalized_ratio = []
 prior = 0
 death_prior = 0
+hos_prior = 0
 for date in sorted(tests_dict, key=lambda d: int(''.join(d.split('T')[0].split('-')))):
     
     dates.append(date)
@@ -69,14 +72,17 @@ for date in sorted(tests_dict, key=lambda d: int(''.join(d.split('T')[0].split('
     new_deaths.append(deaths[-1] - death_prior)
 
     new_positives.append(new_positve_dict[date])
-    hospitlized.append(hospitalized_dict[date])
-
     positive_ratio.append(new_positve_dict[date] / test_diffs[-1])
+        
+    hospitalized.append(hospitalized_dict[date])
+    new_hospitalized.append(hospitalized_dict[date] - hos_prior)
+    hospitalized_ratio.append(new_hospitalized[-1] / test_diffs[-1])
 
     print(date, tests[-1] - prior)
     
     prior = tests[-1]
     death_prior = deaths[-1]
+    hos_prior = hospitalized[-1]
     
 
 fig, ax = plt.subplots()
@@ -84,7 +90,7 @@ fig, ax = plt.subplots()
 ax.plot(dates, test_diffs, label='new tests')
 ax.plot(dates, new_positives, label='new positives')
 ax.plot(dates, new_deaths, label='new deaths')
-ax.plot(dates, hospitlized, label='hospitalizations')
+ax.plot(dates, hospitalized, label='hospitalizations')
 
 N = 8
 xmin, xmax = ax.get_xlim()
@@ -101,6 +107,7 @@ plt.show()
 fig, ax = plt.subplots()
 
 ax.plot(dates, positive_ratio, label='positive test ratio')
+ax.plot(dates, hospitalized_ratio, label='hospitalization ratio')
 
 N = 8
 xmin, xmax = ax.get_xlim()
