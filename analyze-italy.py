@@ -90,7 +90,7 @@ N = 8
 xmin, xmax = ax.get_xlim()
 ax.set_xticks(np.round(np.linspace(xmin, xmax, N), 2))
 
-plt.title("Tests, Positives, Deaths and Hospitalizations")
+plt.title("Italy Tests, Positives, Deaths and Hospitalizations")
 plt.xlabel("date")
 plt.ylabel("count")
 plt.legend()
@@ -106,7 +106,7 @@ N = 8
 xmin, xmax = ax.get_xlim()
 ax.set_xticks(np.round(np.linspace(xmin, xmax, N), 2))
 
-plt.title("Ratio of Positive Test Results")
+plt.title("Italy Ratio of Positive Test Results")
 plt.xlabel("date")
 plt.ylabel("positive test percentage")
 plt.legend()
