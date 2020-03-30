@@ -173,9 +173,7 @@ plt.show()
 
 
 
-# Testing by U.S. State
-fig, ax = plt.subplots()
-
+# Calculates Testing by U.S. State
 top_testing = {}
 for state in new_tests:
     top_testing[state] = sum(new_tests[state])
@@ -196,6 +194,28 @@ for i in range(len(new_tests['US'])):
     dates['remaining'].append(dates['US'][i])
 state_test_totals['remaining'] = sum(new_tests['remaining'])
 
+
+# Graphs Testing by U.S. State
+fig, ax = plt.subplots()
+# top[1:] excludes US total
+for state in top[1:] + ['remaining']:
+    ax.plot(dates[state], new_tests[state],
+            label=state+' tests ('+f'{state_test_totals[state]:,}'+')')
+
+N = 8
+xmin, xmax = ax.get_xlim()
+ax.set_xticks(np.round(np.linspace(xmin, xmax, N), 2))
+
+plt.title("Testing by U.S. State")
+plt.xlabel("date")
+plt.ylabel("count")
+plt.legend()
+fig.autofmt_xdate()
+plt.show()
+
+# Graphs Testing by U.S. State, LOG
+fig, ax = plt.subplots()
+ax.set_yscale('log')
 # top[1:] excludes US total
 for state in top[1:] + ['remaining']:
     ax.plot(dates[state], new_tests[state],
@@ -215,9 +235,13 @@ plt.show()
 
 # Testing ratio graphs
 fig, ax = plt.subplots()
+
+# IGNORE FIRST 10 DAYS (not enough testing)
+start = 10
 for state in top + ['US']:
-    avg_ratio = round(sum(positive_ratio[state]) / len(positive_ratio[state]), 3)
-    ax.plot(dates[state], positive_ratio[state],
+    avg_ratio = round(sum(positive_ratio[state][start:])
+                      / len(positive_ratio[state][start:]), 3)
+    ax.plot(dates[state][start:], positive_ratio[state][start:],
             label=state+' (Ratio: '+f'{avg_ratio}' +
             ', Tests: ' + f'{state_test_totals[state]:,}' +')')
 N = 8
