@@ -21,8 +21,10 @@ for f in files:
                     {
                         "date": row['data'], # date
                         "total hospitalized": row['totale_ospedalizzati'],# total hospitlized
-                        "total currently positive": row['totale_attualmente_positivi'], # total currently positive
-                        "new positives": row['nuovi_attualmente_positivi'], # New positive
+                        "total currently positive": row['variazione_totale_positivi'],
+                        # "total currently positive": row['totale_attualmente_positivi'], # total currently positive
+                        # "new positives": row['nuovi_attualmente_positivi'], # New positive
+                        "new positives": row['nuovi_positivi'], # New positive
                         "hospitalized": row['ricoverati_con_sintomi'], # hospitalized with symptoms                        
                         "tests": row['tamponi'], # test
                         "deceased": row['deceduti'] # dead
