@@ -103,6 +103,8 @@ plt.xlabel("date")
 plt.ylabel("count")
 plt.legend()
 fig.autofmt_xdate()
+plt.savefig('graphs/italy-counts.png',
+            dpi=150.0, bbox_inches='tight')
 plt.show()
 
 
@@ -120,4 +122,6 @@ plt.xlabel("date")
 plt.ylabel("positive test percentage")
 plt.legend()
 fig.autofmt_xdate()
+plt.savefig('graphs/italy-test-ratios.png',
+            dpi=150.0, bbox_inches='tight')
 plt.show()

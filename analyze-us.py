@@ -18,7 +18,6 @@ history_data = json.loads(response.content.decode('utf-8'))
 
 pos_dict = defaultdict(dict)
 neg_dict = defaultdict(dict)
-pending_dict = defaultdict(dict)
 hospitalized_dict = defaultdict(dict)
 deaths_dict = defaultdict(dict)
 
@@ -28,9 +27,11 @@ for state in history_data:
     state_abr = state['state']
     status = defaultdict(int)
 
-    for key in ['positive', 'negative', 'pending',
-                'death', 'hospitalized']:        
-        if state[key] != None:
+    keys = ['positive', 'negative', 'death', 'hospitalized']
+    for key in keys:
+        if key not in state:
+            status[key] = 0
+        elif state[key] != None:
             status[key] = int(state[key])
 
    # State Specific & US counts
@@ -38,13 +39,11 @@ for state in history_data:
         if date in pos_dict[state_id]:
             pos_dict[state_id][date] += status['positive']
             neg_dict[state_id][date] += status['negative']
-            pending_dict[state_id][date] += status['pending']
             deaths_dict[state_id][date] += status['death']
             hospitalized_dict[state_id][date] += status['hospitalized']
         else:
             pos_dict[state_id][date] = status['positive']
             neg_dict[state_id][date] = status['negative']
-            pending_dict[state_id][date] = status['pending']
             deaths_dict[state_id][date] = status['death']
             hospitalized_dict[state_id][date] = status['hospitalized']
 
@@ -67,18 +66,16 @@ for state in pos_dict:
 
     for date in sorted(pos_dict['US']):
 
-        deaths, positives, negatives = 0, 0, 0
-        pending, hospitalized = 0, 0
+        deaths, positives, negatives, hospitalized = 0, 0, 0, 0
 
         if date in pos_dict[state]:
             
             deaths = deaths_dict[state][date]
             positives = pos_dict[state][date]
             negatives = neg_dict[state][date]
-            pending = pending_dict[state][date]
             hospitalized = hospitalized_dict[state][date]
         
-        test_count = positives + negatives + pending
+        test_count = positives + negatives
         
         dates[state].append(datetime.strptime(str(date), '%Y%m%d').strftime("%m-%d"))
         new_tests[state].append(test_count - tests_prior)
@@ -102,6 +99,8 @@ for state in pos_dict:
         neg_prior = negatives
         hos_prior = hospitalized
 
+        # print(state, date, test_count)
+
 
 
 # Raw numbers country wide
@@ -123,6 +122,8 @@ plt.xlabel("date")
 plt.ylabel("count")
 plt.legend()
 fig.autofmt_xdate()
+plt.savefig('graphs/us-counts.png',
+            dpi=150.0, bbox_inches='tight')
 plt.show()
 
 
@@ -147,6 +148,8 @@ plt.xlabel("date")
 plt.ylabel("count")
 plt.legend()
 fig.autofmt_xdate()
+plt.savefig('graphs/us-counts-log.png',
+            dpi=150.0, bbox_inches='tight')
 plt.show()
 
 
@@ -168,6 +171,8 @@ plt.xlabel("date")
 plt.ylabel("positive test percentage")
 plt.legend()
 fig.autofmt_xdate()
+plt.savefig('graphs/us-test-ratios.png',
+            dpi=150.0, bbox_inches='tight')
 plt.show()
 
 
@@ -211,6 +216,8 @@ plt.xlabel("date")
 plt.ylabel("count")
 plt.legend()
 fig.autofmt_xdate()
+plt.savefig('graphs/us-tests-by-state.png',
+            dpi=150.0, bbox_inches='tight')
 plt.show()
 
 # Graphs Testing by U.S. State, LOG
@@ -230,6 +237,8 @@ plt.xlabel("date")
 plt.ylabel("count")
 plt.legend()
 fig.autofmt_xdate()
+plt.savefig('graphs/us-tests-by-state-log.png',
+            dpi=150.0, bbox_inches='tight')
 plt.show()
 
 
@@ -253,4 +262,6 @@ plt.xlabel("date")
 plt.ylabel("positive test percentage")
 plt.legend()
 fig.autofmt_xdate()
+plt.savefig('graphs/us-test-ratios-by-state.png',
+            dpi=150.0, bbox_inches='tight')
 plt.show()
