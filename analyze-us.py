@@ -103,15 +103,17 @@ for state in pos_dict:
 
 
 
+start = 10
+
 # Raw numbers country wide
 fig, ax = plt.subplots()
 
 state = 'US'
-ax.plot(dates[state], new_tests[state], label='new tests')
-ax.plot(dates[state], new_positives[state], label='new positives')
-ax.plot(dates[state], new_negatives[state], label='new negatives')
-ax.plot(dates[state], new_deaths[state], label='new deaths')
-ax.plot(dates[state], new_hospitalized[state], label='new hospitalizations')
+ax.plot(dates[state][start:], new_tests[state][start:], label='new tests')
+ax.plot(dates[state][start:], new_positives[state][start:], label='new positives')
+ax.plot(dates[state][start:], new_negatives[state][start:], label='new negatives')
+ax.plot(dates[state][start:], new_deaths[state][start:], label='new deaths')
+ax.plot(dates[state][start:], new_hospitalized[state][start:], label='new hospitalizations')
 
 N = 8
 xmin, xmax = ax.get_xlim()
@@ -133,11 +135,11 @@ fig, ax = plt.subplots()
 ax.set_yscale('log')
 
 state = 'US'
-ax.plot(dates[state], new_tests[state], label='new tests')
-ax.plot(dates[state], new_positives[state], label='new positives')
-ax.plot(dates[state], new_negatives[state], label='new negatives')
-ax.plot(dates[state], new_deaths[state], label='new deaths')
-ax.plot(dates[state], new_hospitalized[state], label='new hospitalizations')
+ax.plot(dates[state][start:], new_tests[state][start:], label='new tests')
+ax.plot(dates[state][start:], new_positives[state][start:], label='new positives')
+ax.plot(dates[state][start:], new_negatives[state][start:], label='new negatives')
+ax.plot(dates[state][start:], new_deaths[state][start:], label='new deaths')
+ax.plot(dates[state][start:], new_hospitalized[state][start:], label='new hospitalizations')
 
 N = 8
 xmin, xmax = ax.get_xlim()
@@ -158,9 +160,9 @@ plt.show()
 # Testing ratio graphs
 fig, ax = plt.subplots()
 state = 'US'
-ax.plot(dates[state], positive_ratio[state], label='positive to test ratio')
-ax.plot(dates[state], death_ratio[state], label='mortality to test ratio')
-ax.plot(dates[state], hospitalized_ratio[state], label='hospitalization to test ratio')
+ax.plot(dates[state][start:], positive_ratio[state][start:], label='positive to test ratio')
+ax.plot(dates[state][start:], death_ratio[state][start:], label='mortality to test ratio')
+ax.plot(dates[state][start:], hospitalized_ratio[state][start:], label='hospitalization to test ratio')
 
 N = 8
 xmin, xmax = ax.get_xlim()
@@ -204,7 +206,7 @@ state_test_totals['remaining'] = sum(new_tests['remaining'])
 fig, ax = plt.subplots()
 # top[1:] excludes US total
 for state in top[1:] + ['remaining']:
-    ax.plot(dates[state], new_tests[state],
+    ax.plot(dates[state][start:], new_tests[state][start:],
             label=state+' tests ('+f'{state_test_totals[state]:,}'+')')
 
 N = 8
@@ -225,7 +227,7 @@ fig, ax = plt.subplots()
 ax.set_yscale('log')
 # top[1:] excludes US total
 for state in top[1:] + ['remaining']:
-    ax.plot(dates[state], new_tests[state],
+    ax.plot(dates[state][start:], new_tests[state][start:],
             label=state+' tests ('+f'{state_test_totals[state]:,}'+')')
 
 N = 8
@@ -246,7 +248,6 @@ plt.show()
 fig, ax = plt.subplots()
 
 # IGNORE FIRST 10 DAYS (not enough testing)
-start = 10
 for state in top + ['US']:
     avg_ratio = round(sum(positive_ratio[state][start:])
                       / len(positive_ratio[state][start:]), 3)
