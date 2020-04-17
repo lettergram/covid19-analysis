@@ -193,11 +193,15 @@ for state, total_tests in top_testing[:split]:
     top.append(state)
     state_test_totals[state] = total_tests
 
+# Take top tests / deaths
 for i in range(len(new_tests['US'])):
     tests_on_date = 0
+    deaths_on_date = 0
     for state, total_tests in top_testing[split:]:
         tests_on_date += new_tests[state][i]
+        deaths_on_date += new_deaths[state][i]
     new_tests['remaining'].append(tests_on_date)
+    new_deaths['remaining'].append(deaths_on_date)
     dates['remaining'].append(dates['US'][i])
 state_test_totals['remaining'] = sum(new_tests['remaining'])
 
@@ -221,6 +225,8 @@ fig.autofmt_xdate()
 plt.savefig('graphs/us-tests-by-state.png',
             dpi=150.0, bbox_inches='tight')
 plt.show()
+
+
 
 # Graphs Testing by U.S. State, LOG
 fig, ax = plt.subplots()
@@ -264,5 +270,37 @@ plt.ylabel("positive test percentage")
 plt.legend()
 fig.autofmt_xdate()
 plt.savefig('graphs/us-test-ratios-by-state.png',
+            dpi=150.0, bbox_inches='tight')
+plt.show()
+
+
+# Graphs deaths by U.S. State
+top_deaths = {}
+for state in new_deaths:
+    top_deaths[state] = sum(new_deaths[state])
+top_deaths = sorted(top_deaths.items(), key=lambda x: x[1], reverse=True)
+
+top = []
+state_death_totals = {}
+for state, total_deaths in top_deaths[:split]:
+    top.append(state)
+    state_death_totals[state] = total_deaths
+    
+fig, ax = plt.subplots()
+# top[1:] excludes US total
+for state in top[1:]:
+    ax.plot(dates[state][start:], new_deaths[state][start:],
+            label=state+' deaths ('+f'{state_death_totals[state]:,}'+')')
+
+N = 8
+xmin, xmax = ax.get_xlim()
+ax.set_xticks(np.round(np.linspace(xmin, xmax, N), 2))
+
+plt.title("Deaths by U.S. State")
+plt.xlabel("date")
+plt.ylabel("deaths")
+plt.legend()
+fig.autofmt_xdate()
+plt.savefig('graphs/us-deaths-by-state.png',
             dpi=150.0, bbox_inches='tight')
 plt.show()
