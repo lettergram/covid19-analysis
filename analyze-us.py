@@ -103,7 +103,7 @@ for state in pos_dict:
 
 
 
-start = 10
+start = 45
 
 # Raw numbers country wide
 fig, ax = plt.subplots()
