@@ -125,3 +125,35 @@ fig.autofmt_xdate()
 plt.savefig('graphs/italy-test-ratios.png',
             dpi=150.0, bbox_inches='tight')
 plt.show()
+
+
+
+# OVERLAP
+
+fig, ax = plt.subplots()
+
+new_pos, new_hos, new_dea = [], [], []
+max_pos = max(new_positives)
+max_hos = max(new_hospitalized)
+max_dea = max(new_deaths)
+for i in range(len(new_positives)):
+    new_pos.append(new_positives[i]/max_pos)
+    new_hos.append(new_hospitalized[i]/max_hos)
+    new_dea.append(new_deaths[i]/max_dea)
+
+ax.plot(dates, new_pos, label='New Positives')
+ax.plot(dates, new_hos, label='New Hospitalizations')
+ax.plot(dates, new_dea, label='New Deaths')
+
+N = 8
+xmin, xmax = ax.get_xlim()
+ax.set_xticks(np.round(np.linspace(xmin, xmax, N), 2))
+
+plt.title("Italy Positives, Hospitalized, Deaths")
+plt.xlabel("date")
+plt.ylabel("normalized trends")
+plt.legend()
+fig.autofmt_xdate()
+plt.savefig('graphs/italy-trends.png',
+            dpi=150.0, bbox_inches='tight')
+plt.show()

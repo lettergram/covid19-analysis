@@ -102,7 +102,6 @@ for state in pos_dict:
         # print(state, date, test_count)
 
 
-
 start = 60
 
 # Raw numbers country wide
@@ -302,5 +301,49 @@ plt.ylabel("deaths")
 plt.legend()
 fig.autofmt_xdate()
 plt.savefig('graphs/us-deaths-by-state.png',
+            dpi=150.0, bbox_inches='tight')
+plt.show()
+
+
+
+# Graphs overlay for one State
+
+fig, ax = plt.subplots()
+# top[1:] excludes US total
+designated_state = 'NY'
+
+for state in [designated_state]:
+    state_pos = []
+    max_state_pos = max(new_positives[state])
+    for i in range(len(new_positives[state])):
+        state_pos.append(new_positives[state][i] / max_state_pos)        
+    ax.plot(dates[state][start:], state_pos[start:],
+            label=state+' Positives: '+f'{state_test_totals[state]:,}')
+
+    state_hos = []
+    max_state_hos = max(new_hospitalized[state])
+    for i in range(len(new_hospitalized[state])):
+        state_hos.append(new_hospitalized[state][i] / max_state_hos)
+    state_hospitalized_total = sum(new_hospitalized[state])
+    ax.plot(dates[state][start:], state_hos[start:],
+            label=state+' Hospitalized: '+f'{state_hospitalized_total:,}')
+
+    state_deaths = []
+    max_state_deaths = max(new_deaths[state])
+    for i in range(len(new_deaths[state])):
+        state_deaths.append(new_deaths[state][i] / max_state_deaths)    
+    ax.plot(dates[state][start:], state_deaths[start:],
+            label=state+' Deaths: '+f'{state_death_totals[state]:,}')
+
+N = 8
+xmin, xmax = ax.get_xlim()
+ax.set_xticks(np.round(np.linspace(xmin, xmax, N), 2))
+
+plt.title("Stats in " + designated_state)
+plt.xlabel("date")
+plt.ylabel("normalized trends")
+plt.legend()
+fig.autofmt_xdate()
+plt.savefig('graphs/us-stats-in-'+designated_state+'.png',
             dpi=150.0, bbox_inches='tight')
 plt.show()
