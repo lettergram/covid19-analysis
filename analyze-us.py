@@ -191,7 +191,7 @@ split = 10
 for state, total_tests in top_testing[:split]:
     top.append(state)
     state_test_totals[state] = total_tests
-
+    
 # Take top tests / deaths
 for i in range(len(new_tests['US'])):
     tests_on_date = 0
@@ -310,9 +310,9 @@ plt.show()
 
 fig, ax = plt.subplots()
 # top[1:] excludes US total
-designated_state = 'NY'
+designated_states = ['NY']# new_positives.keys()
 
-for state in [designated_state]:
+for state in designated_states:
     state_pos = []
     max_state_pos = max(new_positives[state])
     for i in range(len(new_positives[state])):
@@ -335,15 +335,15 @@ for state in [designated_state]:
     ax.plot(dates[state][start:], state_deaths[start:],
             label=state+' Deaths: '+f'{state_death_totals[state]:,}')
 
-N = 8
-xmin, xmax = ax.get_xlim()
-ax.set_xticks(np.round(np.linspace(xmin, xmax, N), 2))
+    N = 8
+    xmin, xmax = ax.get_xlim()
+    ax.set_xticks(np.round(np.linspace(xmin, xmax, N), 2))
 
-plt.title("Stats in " + designated_state)
-plt.xlabel("date")
-plt.ylabel("normalized trends")
-plt.legend()
-fig.autofmt_xdate()
-plt.savefig('graphs/us-stats-in-'+designated_state+'.png',
-            dpi=150.0, bbox_inches='tight')
-plt.show()
+    plt.title("Stats in " + state)
+    plt.xlabel("date")
+    plt.ylabel("normalized trends")
+    plt.legend()
+    fig.autofmt_xdate()
+    plt.savefig('graphs/us-stats-in-'+state+'.png',
+                dpi=150.0, bbox_inches='tight')
+    plt.show()
