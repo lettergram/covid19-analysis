@@ -283,6 +283,8 @@ top = []
 state_death_totals = {}
 for state, total_deaths in top_deaths[:split]:
     top.append(state)
+# Transfer all totals in dict
+for state, total_deaths in top_deaths:
     state_death_totals[state] = total_deaths
     
 fig, ax = plt.subplots()
@@ -309,21 +311,27 @@ plt.show()
 # Graphs overlay for one State
 
 # top[1:] excludes US total
-designated_states = ['NY', 'CA', 'IL']# new_positives.keys()
+designated_states = ['NY', 'CA', 'IL', 'FL', 'TX', 'MA']# new_positives.keys()
 
 for state in designated_states:
     fig, ax = plt.subplots()
     state_pos = []
     max_state_pos = max(new_positives[state])
     for i in range(len(new_positives[state])):
-        state_pos.append(0.001+new_positives[state][i] / 0.001+max_state_pos)        
+        new_pos_ratio = 0.0
+        if max_state_pos > 0:
+            new_pos_ratio = new_positives[state][i] / max_state_pos
+        state_pos.append(new_pos_ratio)
     ax.plot(dates[state][start:], state_pos[start:],
             label=state+' Positives: '+f'{state_test_totals[state]:,}')
 
     state_hos = []
     max_state_hos = max(new_hospitalized[state])
     for i in range(len(new_hospitalized[state])):
-        state_hos.append(0.001+new_hospitalized[state][i] / 0.001+max_state_hos)
+        new_hos_ratio = 0.0
+        if max_state_hos > 0:
+            new_hos_ratio = new_hospitalized[state][i] / max_state_hos
+        state_hos.append(new_hos_ratio)
     state_hospitalized_total = sum(new_hospitalized[state])
     ax.plot(dates[state][start:], state_hos[start:],
             label=state+' Hospitalized: '+f'{state_hospitalized_total:,}')
@@ -331,7 +339,10 @@ for state in designated_states:
     state_deaths = []
     max_state_deaths = max(new_deaths[state])
     for i in range(len(new_deaths[state])):
-        state_deaths.append(0.001+new_deaths[state][i] / 0.0001+max_state_deaths)    
+        new_death_ratio = 0.0
+        if max_state_deaths > 0:
+            new_death_ratio = new_deaths[state][i] / max_state_deaths
+        state_deaths.append(new_death_ratio)
     ax.plot(dates[state][start:], state_deaths[start:],
             label=state+' Deaths: '+f'{state_death_totals[state]:,}')
 
