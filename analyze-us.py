@@ -123,6 +123,7 @@ plt.xlabel("date")
 plt.ylabel("count")
 plt.legend()
 fig.autofmt_xdate()
+plt.tight_layout()
 plt.savefig('graphs/us-counts.png',
             dpi=150.0, bbox_inches='tight')
 plt.show()
@@ -149,6 +150,7 @@ plt.xlabel("date")
 plt.ylabel("count")
 plt.legend()
 fig.autofmt_xdate()
+plt.tight_layout()
 plt.savefig('graphs/us-counts-log.png',
             dpi=150.0, bbox_inches='tight')
 plt.show()
@@ -172,6 +174,7 @@ plt.xlabel("date")
 plt.ylabel("positive test percentage")
 plt.legend()
 fig.autofmt_xdate()
+plt.tight_layout()
 plt.savefig('graphs/us-test-ratios.png',
             dpi=150.0, bbox_inches='tight')
 plt.show()
@@ -221,6 +224,7 @@ plt.xlabel("date")
 plt.ylabel("count")
 plt.legend()
 fig.autofmt_xdate()
+plt.tight_layout()
 plt.savefig('graphs/us-tests-by-state.png',
             dpi=150.0, bbox_inches='tight')
 plt.show()
@@ -244,6 +248,7 @@ plt.xlabel("date")
 plt.ylabel("count")
 plt.legend()
 fig.autofmt_xdate()
+plt.tight_layout()
 plt.savefig('graphs/us-tests-by-state-log.png',
             dpi=150.0, bbox_inches='tight')
 plt.show()
@@ -268,6 +273,7 @@ plt.xlabel("date")
 plt.ylabel("positive test percentage")
 plt.legend()
 fig.autofmt_xdate()
+plt.tight_layout()
 plt.savefig('graphs/us-test-ratios-by-state.png',
             dpi=150.0, bbox_inches='tight')
 plt.show()
@@ -302,6 +308,7 @@ plt.xlabel("date")
 plt.ylabel("deaths")
 plt.legend()
 fig.autofmt_xdate()
+plt.tight_layout()
 plt.savefig('graphs/us-deaths-by-state.png',
             dpi=150.0, bbox_inches='tight')
 plt.show()
@@ -310,31 +317,74 @@ plt.show()
 
 # Graphs overlay for one State
 
-# top[1:] excludes US total
-designated_states = ['NY', 'CA', 'IL', 'FL', 'TX', 'MA']# new_positives.keys()
+annotated_states = {
+    "NY": [
+        # x-value (date)
+        ('05-30', "BLM Protests Start"), 
+        ('06-08', "Phase 1"), # https://www.governor.ny.gov/news/governor-cuomo-announces-new-york-city-enter-phase-1-reopening-june-8-and-five-regions-enter
+    ],
+    "CA": [
+        ('04-27', "Phase 0"), # https://covid19.ca.gov/roadmap/
+        ('05-08', "Phase 1"), # https://www.cnn.com/2020/05/08/us/california-coronavirus-reopening/index.html
+        ('05-30', "BLM Protests Start"), 
+        ('06-09', "Phase 2") # https://projects.sfchronicle.com/2020/coronavirus-map/california-reopening/
+    ],
+    "IL": [
+        ('05-05', "Phase 2"), # https://www.ksdk.com/article/news/health/coronavirus/illinois-reopening-plan-regions/63-c8fb6b2e-9de7-4193-a2b3-be3a4a7a3c3b
+        ('05-29', "Phase 3"), # https://www.nbcchicago.com/news/local/illinois-phase-3-how-businesses-will-reopen-and-what-you-will-be-allowed-to-do/2278083/
+        ('05-30', "BLM Protests Start"), 
+    ],
+    "FL": [
+        ('05-01', "Phase 1"), # https://www.baynews9.com/fl/tampa/coronavirus/2020/05/01/taking-a-look-at-floridas-phase-2-reopening
+        ('05-30', "BLM Protests Start"), 
+        ('06-02', "Phase 2"), # https://www.news-press.com/story/news/local/2020/06/04/desantis-phase-2-reopen-florida-what-means/5258774002/
+    ],
+    "TX": [
+        ('05-01', "Phase 1"), # https://gov.texas.gov/news/post/governor-abbott-announces-phase-one-to-open-texas-establishes-statewide-minimum-standard-health-protocols
+        ('05-18', "Phase 2"), # https://gov.texas.gov/news/post/governor-abbott-announces-phase-two-to-open-texas
+        ('05-29', "Phase 3"), # https://www.bizjournals.com/dallas/news/2020/05/29/phase-2-reopening.html
+        ('05-30', "BLM Protests Start"), 
+    ],
+    "MA": [
+        ('05-18', "Phase 1"), # https://www.msn.com/en-us/news/us/a-look-at-what-can-reopen-in-each-phase-of-massachusetts-opening-plan/ar-BB14fS5B
+        ('05-30', "BLM Protests Start"), 
+        ('06-08', "Phase 2"), # https://www.masslive.com/coronavirus/2020/06/massachusetts-to-enter-phase-2-of-reopening-plan-on-monday-june-8.html
+    ],
+    "GA": [
+        ('04-24', "Reopens"), # https://www.businessinsider.com/georgia-to-open-gyms-nail-salons-bowling-alleys-and-more-on-friday-2020-4?op=1
+        ('05-30', "BLM Protests Start"), 
+    ],
+    "MI": [
+        ('05-07', "Phase 3"), # https://www.mlive.com/public-interest/2020/05/michigan-is-in-phase-3-of-6-in-coronavirus-response-and-recovery-governor-says.html
+        ('05-26', "Phase 4"), # average - https://www.lansingstatejournal.com/story/news/2020/05/18/reopen-michigan-whitmer-coronavirus-restaurant-bars-retail-phase-safe-start/5215855002/, https://www.freep.com/story/news/local/michigan/2020/05/21/coronavirus-michigan-reopening-whitmer-retail-auto-dental/5235512002/, https://www.clickondetroit.com/news/local/2020/06/01/michigans-reopening-reaches-phase-4-heres-the-next-stage-and-what-it-will-take-to-get-there/        
+    ]
+}
 
-for state in designated_states:
+state_pos = {}
+for state in annotated_states.keys():
+    state_pos[state] = []
     fig, ax = plt.subplots()
-    state_pos = []
     max_state_pos = max(new_positives[state])
     for i in range(len(new_positives[state])):
         new_pos_ratio = 0.0
         if max_state_pos > 0:
             new_pos_ratio = new_positives[state][i] / max_state_pos
-        state_pos.append(new_pos_ratio)
-    ax.plot(dates[state][start:], state_pos[start:],
+        state_pos[state].append(new_pos_ratio)        
+    ax.plot(dates[state][start:], state_pos[state][start:],
             label=state+' Positives: '+f'{state_test_totals[state]:,}')
 
     state_hos = []
     max_state_hos = max(new_hospitalized[state])
-    for i in range(len(new_hospitalized[state])):
-        new_hos_ratio = 0.0
-        if max_state_hos > 0:
-            new_hos_ratio = new_hospitalized[state][i] / max_state_hos
-        state_hos.append(new_hos_ratio)
-    state_hospitalized_total = sum(new_hospitalized[state])
-    ax.plot(dates[state][start:], state_hos[start:],
-            label=state+' Hospitalized: '+f'{state_hospitalized_total:,}')
+    if max_state_hos > 0:
+        for i in range(len(new_hospitalized[state])):
+            new_hos_ratio = 0.0
+            if max_state_hos > 0:
+                new_hos_ratio = new_hospitalized[state][i] / max_state_hos
+            state_hos.append(new_hos_ratio)
+        state_hospitalized_total = sum(new_hospitalized[state])
+        ax.plot(dates[state][start:], state_hos[start:],
+                label=state+' Hospitalized: '+f'{state_hospitalized_total:,}',
+                color="orange", linestyle='dashed')
 
     state_deaths = []
     max_state_deaths = max(new_deaths[state])
@@ -344,8 +394,30 @@ for state in designated_states:
             new_death_ratio = new_deaths[state][i] / max_state_deaths
         state_deaths.append(new_death_ratio)
     ax.plot(dates[state][start:], state_deaths[start:],
-            label=state+' Deaths: '+f'{state_death_totals[state]:,}')
+            label=state+' Deaths: '+f'{state_death_totals[state]:,}',
+            color="green", linestyle='dotted')
 
+    next_phase = 0
+    for x in range(start, len(dates[state])):
+        if next_phase < len(annotated_states[state]):
+            
+            if dates[state][x] == annotated_states[state][next_phase][0]:
+                text = annotated_states[state][next_phase][1]
+                xy = (dates[state][x], state_pos[state][x])
+                arrows = dict(facecolor='black',  arrowstyle="->")
+                xytext = (dates[state][x],
+                          max(state_pos[state][x]-0.25, 0.0))
+                if "Phase" not in text:
+                    xytext = (dates[state][x],
+                              min(state_pos[state][x]+0.25, 1.0))
+                plt.annotate(text, xy=xy, xycoords='data',
+                             xytext=xytext, arrowprops=arrows,
+                             bbox=dict(boxstyle="round", fc="w"),
+                )
+                next_phase += 1
+
+            
+    
     N = 8
     xmin, xmax = ax.get_xlim()
     ax.set_xticks(np.round(np.linspace(xmin, xmax, N), 2))
@@ -355,6 +427,7 @@ for state in designated_states:
     plt.ylabel("normalized trends")
     plt.legend()
     fig.autofmt_xdate()
+    plt.tight_layout()
     plt.savefig('graphs/us-stats-in-'+state+'.png',
                 dpi=150.0, bbox_inches='tight')
     plt.show()
