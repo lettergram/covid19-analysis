@@ -320,6 +320,9 @@ plt.show()
 annotated_states = {
     "NY": [
         # x-value (date)
+        ('04-12', "Easter Sunday"),
+        ('04-26', "2 Weeks After Easter"),
+        ('05-10', "4 Weeks After Easter"),
         ('05-30', "BLM Protests Start"), 
         ('06-08', "Phase 1"), # https://www.governor.ny.gov/news/governor-cuomo-announces-new-york-city-enter-phase-1-reopening-june-8-and-five-regions-enter
     ],
@@ -357,22 +360,34 @@ annotated_states = {
     "MI": [
         ('05-07', "Phase 3"), # https://www.mlive.com/public-interest/2020/05/michigan-is-in-phase-3-of-6-in-coronavirus-response-and-recovery-governor-says.html
         ('05-26', "Phase 4"), # average - https://www.lansingstatejournal.com/story/news/2020/05/18/reopen-michigan-whitmer-coronavirus-restaurant-bars-retail-phase-safe-start/5215855002/, https://www.freep.com/story/news/local/michigan/2020/05/21/coronavirus-michigan-reopening-whitmer-retail-auto-dental/5235512002/, https://www.clickondetroit.com/news/local/2020/06/01/michigans-reopening-reaches-phase-4-heres-the-next-stage-and-what-it-will-take-to-get-there/        
+    ],
+    "NJ": [
+        ('05-18', "Beaches Open"), # https://www.inquirer.com/things-to-do/jersey-shore/new-jersey-beaches-shore-beach-coronavirus-social-distancing-20200507.html
+        ('05-30', "BLM Protests Start"),
     ]
 }
 
 state_pos = {}
+state_pos_avg = {}
 for state in annotated_states.keys():
-    state_pos[state] = []
+
     fig, ax = plt.subplots()
+    
+    # POSITIVES
+    days = 5
+    state_pos[state] = []
+    state_pos_avg[state] = []
     max_state_pos = max(new_positives[state])
     for i in range(len(new_positives[state])):
         new_pos_ratio = 0.0
         if max_state_pos > 0:
             new_pos_ratio = new_positives[state][i] / max_state_pos
-        state_pos[state].append(new_pos_ratio)        
-    ax.plot(dates[state][start:], state_pos[state][start:],
-            label=state+' Positives: '+f'{state_test_totals[state]:,}')
+        state_pos[state].append(new_pos_ratio)
+        state_pos_avg[state].append(
+            sum(state_pos[state][-days:]) / len(state_pos[state][-days:])
+        )
 
+    # HOSPTIALIZED
     state_hos = []
     max_state_hos = max(new_hospitalized[state])
     if max_state_hos > 0:
@@ -382,20 +397,35 @@ for state in annotated_states.keys():
                 new_hos_ratio = new_hospitalized[state][i] / max_state_hos
             state_hos.append(new_hos_ratio)
         state_hospitalized_total = sum(new_hospitalized[state])
-        ax.plot(dates[state][start:], state_hos[start:],
-                label=state+' Hospitalized: '+f'{state_hospitalized_total:,}',
-                color="orange", linestyle='dashed')
 
+    # DEATHS
     state_deaths = []
+    state_deaths_avg = []
     max_state_deaths = max(new_deaths[state])
     for i in range(len(new_deaths[state])):
         new_death_ratio = 0.0
         if max_state_deaths > 0:
             new_death_ratio = new_deaths[state][i] / max_state_deaths
         state_deaths.append(new_death_ratio)
+        state_deaths_avg.append(
+            sum(state_deaths[-days:]) / len(state_deaths[-days:])
+        )
+
+        
+    ax.plot(dates[state][start:], state_pos_avg[state][start:],
+            label='Positives, '+str(days)+' Day Avg', color="blue")
+    ax.plot(dates[state][start:], state_deaths_avg[start:],
+            label='Deaths ('+str(days)+' Day Avg)', color="green")
+    ax.plot(dates[state][start:], state_pos[state][start:],
+            label='Positives: '+f'{state_test_totals[state]:,}',
+            color="cyan", linestyle='dotted')
     ax.plot(dates[state][start:], state_deaths[start:],
-            label=state+' Deaths: '+f'{state_death_totals[state]:,}',
-            color="green", linestyle='dotted')
+            label='Deaths: '+f'{state_death_totals[state]:,}',
+            color="green", linestyle='dotted')    
+    if max_state_hos > 0:
+        ax.plot(dates[state][start:], state_hos[start:],
+                label='Hospitalized: '+f'{state_hospitalized_total:,}',
+                color="orange", linestyle='dotted')
 
     next_phase = 0
     for x in range(start, len(dates[state])):
@@ -403,13 +433,13 @@ for state in annotated_states.keys():
             
             if dates[state][x] == annotated_states[state][next_phase][0]:
                 text = annotated_states[state][next_phase][1]
-                xy = (dates[state][x], state_pos[state][x])
+                xy = (dates[state][x], state_pos_avg[state][x])
                 arrows = dict(facecolor='black',  arrowstyle="->")
                 xytext = (dates[state][x],
-                          max(state_pos[state][x]-0.25, 0.0))
+                          max(state_pos_avg[state][x]-0.25, 0.0))
                 if "Phase" not in text:
                     xytext = (dates[state][x],
-                              min(state_pos[state][x]+0.25, 1.0))
+                              min(state_pos_avg[state][x]+0.25, 1.0))
                 plt.annotate(text, xy=xy, xycoords='data',
                              xytext=xytext, arrowprops=arrows,
                              bbox=dict(boxstyle="round", fc="w"),
