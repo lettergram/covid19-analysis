@@ -102,7 +102,7 @@ for state in pos_dict:
         # print(state, date, test_count)
 
 
-start = 60
+start = 65
 
 # Raw numbers country wide
 fig, ax = plt.subplots()
@@ -418,14 +418,14 @@ for state in annotated_states.keys():
             label='Deaths ('+str(days)+' Day Avg)', color="green")
     ax.plot(dates[state][start:], state_pos[state][start:],
             label='Positives: '+f'{state_test_totals[state]:,}',
-            color="cyan", linestyle='dotted')
+            color="blue", alpha=0.6, linestyle='dotted')
     ax.plot(dates[state][start:], state_deaths[start:],
             label='Deaths: '+f'{state_death_totals[state]:,}',
-            color="green", linestyle='dotted')    
+            color="green", alpha=0.6, linestyle='dotted')    
     if max_state_hos > 0:
         ax.plot(dates[state][start:], state_hos[start:],
                 label='Hospitalized: '+f'{state_hospitalized_total:,}',
-                color="orange", linestyle='dotted')
+                color="orange", alpha=0.6, linestyle='dotted')
 
     next_phase = 0
     for x in range(start, len(dates[state])):
