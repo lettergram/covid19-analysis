@@ -156,8 +156,6 @@ plt.savefig('graphs/us-counts-log.png',
 plt.show()
 
 
-
-
 # Testing ratio graphs
 fig, ax = plt.subplots()
 state = 'US'
@@ -359,7 +357,8 @@ annotated_states = {
     ],
     "MI": [
         ('05-07', "Phase 3"), # https://www.mlive.com/public-interest/2020/05/michigan-is-in-phase-3-of-6-in-coronavirus-response-and-recovery-governor-says.html
-        ('05-26', "Phase 4"), # average - https://www.lansingstatejournal.com/story/news/2020/05/18/reopen-michigan-whitmer-coronavirus-restaurant-bars-retail-phase-safe-start/5215855002/, https://www.freep.com/story/news/local/michigan/2020/05/21/coronavirus-michigan-reopening-whitmer-retail-auto-dental/5235512002/, https://www.clickondetroit.com/news/local/2020/06/01/michigans-reopening-reaches-phase-4-heres-the-next-stage-and-what-it-will-take-to-get-there/        
+        ('05-26', "Phase 4"), # average - https://www.lansingstatejournal.com/story/news/2020/05/18/reopen-michigan-whitmer-coronavirus-restaurant-bars-retail-phase-safe-start/5215855002/, https://www.freep.com/story/news/local/michigan/2020/05/21/coronavirus-michigan-reopening-whitmer-retail-auto-dental/5235512002/, https://www.clickondetroit.com/news/local/2020/06/01/michigans-reopening-reaches-phase-4-heres-the-next-stage-and-what-it-will-take-to-get-there/
+        ('05-30', "BLM Protests Start"), 
     ],
     "NJ": [
         ('05-18', "Beaches Open"), # https://www.inquirer.com/things-to-do/jersey-shore/new-jersey-beaches-shore-beach-coronavirus-social-distancing-20200507.html
@@ -433,6 +432,7 @@ for state in annotated_states.keys():
             
             if dates[state][x] == annotated_states[state][next_phase][0]:
                 text = annotated_states[state][next_phase][1]
+                text += " (" + dates[state][x]  + ")"
                 xy = (dates[state][x], state_pos_avg[state][x])
                 arrows = dict(facecolor='black',  arrowstyle="->")
                 xytext = (dates[state][x],
