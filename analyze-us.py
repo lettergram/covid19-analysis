@@ -188,7 +188,7 @@ top_testing = sorted(top_testing.items(), key=lambda x: x[1], reverse=True)
 
 state_test_totals = {}
 top = []
-split = 10
+split = 15
 for state, total_tests in top_testing[:split]:
     top.append(state)
     state_test_totals[state] = total_tests

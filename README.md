@@ -41,3 +41,5 @@ Total New Cases: https://www.cdc.gov/coronavirus/2019-ncov/cases-updates/us-case
 ## COVID Tracking
 
 Covidtracking.com: https://covidtracking.com/api/states/daily
+
+Data: CDC Flu / Pnumonia Mortality per state - https://www.cdc.gov/nchs/pressroom/sosmap/flu_pneumonia_mortality/flu_pneumonia.htm also in `data/` folder
