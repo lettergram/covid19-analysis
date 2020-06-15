@@ -30,13 +30,16 @@ for state in deaths_per_year[years[0]].keys():
     print("AVERAGE: ", avg, "\n----------------\n")
 
 
+
 # Triggered: https://www.reddit.com/r/Coronavirus/comments/h7s70f/by_the_end_of_this_weekend_more_americans_will/funn3ua?utm_source=share&utm_medium=web2x
 # https://www.cdc.gov/nchs/nvss/vsrr/covid19/excess_deaths.htm
-cdc_mortality_file = open(
+cdc_mortality_age_group_file = open(
     'data/Weekly_counts_of_deaths_by_jurisdiction_and_age_group.csv', 'r'
 )
 
-df = pd.read_csv(cdc_mortality_file)
+
+"""
+df = pd.read_csv(cdc_mortality_age_group_file)
 
 print(df.columns.values)
 
@@ -49,10 +52,11 @@ print(df_range.to_string())
 
 df_range = df_range.groupby(['State Abbreviation', 'Year']).sum()
 print(df_range.to_string())
+"""
 
 deaths_per_state = {}
 first = True
-for row in cdc_mortality_file:
+for row in cdc_mortality_age_group_file:
     if not first:
         # 0-Jurisdiction, 1-Week Ending Date, 2-State Abbreviation, 3-Year,        
         # 4-Week, 5-Age Group, 6-Number of Deaths
@@ -61,28 +65,43 @@ for row in cdc_mortality_file:
         year = int(r[3])
         week = int(r[4])
         deaths = int(r[6])
-        
+
+        # print(state, state not in deaths_per_state)
         if state not in deaths_per_state:
             deaths_per_state[state] = {}
-            
+
+        # print(state, year, year not in deaths_per_state[state])
         if year not in deaths_per_state[state]:
             deaths_per_state[state][year] = {}
             
         deaths_per_state[state][year][week] = deaths
         
-        print(state, year, week, deaths)
+        # print(state, year, week, deaths)
     else:
         first = False
+
 
 for state in deaths_per_state:
     for year in deaths_per_state[state]:
         for week in deaths_per_state[state][year]:
-            print(state, year, deaths_per_state[state][year][wee+k])
+            print(state, year, deaths_per_state[state][year][week])
 
-for state in deaths_per_state:
-    for year in deaths_per_state[state]:
-        sum_year = 0
+
+for state in deaths_per_state.keys():
+    sum_year = []
+    cur_year = 0
+    for year in deaths_per_state[state].keys():
+        sum_year.append(0)
         for week in range(1, len(deaths_per_state[state][2020])):
-            sum_year += deaths_per_state[state][year][week]
-        print(state, year, sum_year)
+            if year == 2020:
+                cur_year += deaths_per_state[state][year][week]
+            sum_year[-1] += deaths_per_state[state][year][week]
+        print(state, year, sum_year[-1])
+    print("---------------")
+    print(state, year,
+          str(
+              round(cur_year / (sum(sum_year[1:-1])/len(sum_year[1:-1]))-1.0, 3)
+          )
+              +"% above average")
+    print("---------------\n")
         

@@ -321,47 +321,56 @@ annotated_states = {
         ('04-12', "Easter Sunday"),
         ('04-26', "2 Weeks After Easter"),
         ('05-10', "4 Weeks After Easter"),
+        ('05-25', "Memorial Day"),
         ('05-30', "BLM Protests Start"), 
         ('06-08', "Phase 1"), # https://www.governor.ny.gov/news/governor-cuomo-announces-new-york-city-enter-phase-1-reopening-june-8-and-five-regions-enter
     ],
     "CA": [
         ('04-27', "Phase 0"), # https://covid19.ca.gov/roadmap/
         ('05-08', "Phase 1"), # https://www.cnn.com/2020/05/08/us/california-coronavirus-reopening/index.html
+        ('05-25', "Memorial Day"),
         ('05-30', "BLM Protests Start"), 
         ('06-09', "Phase 2") # https://projects.sfchronicle.com/2020/coronavirus-map/california-reopening/
     ],
     "IL": [
         ('05-05', "Phase 2"), # https://www.ksdk.com/article/news/health/coronavirus/illinois-reopening-plan-regions/63-c8fb6b2e-9de7-4193-a2b3-be3a4a7a3c3b
+        ('05-25', "Memorial Day"),
         ('05-29', "Phase 3"), # https://www.nbcchicago.com/news/local/illinois-phase-3-how-businesses-will-reopen-and-what-you-will-be-allowed-to-do/2278083/
         ('05-30', "BLM Protests Start"), 
     ],
     "FL": [
         ('05-01', "Phase 1"), # https://www.baynews9.com/fl/tampa/coronavirus/2020/05/01/taking-a-look-at-floridas-phase-2-reopening
+        ('05-25', "Memorial Day"),
         ('05-30', "BLM Protests Start"), 
         ('06-02', "Phase 2"), # https://www.news-press.com/story/news/local/2020/06/04/desantis-phase-2-reopen-florida-what-means/5258774002/
     ],
     "TX": [
         ('05-01', "Phase 1"), # https://gov.texas.gov/news/post/governor-abbott-announces-phase-one-to-open-texas-establishes-statewide-minimum-standard-health-protocols
         ('05-18', "Phase 2"), # https://gov.texas.gov/news/post/governor-abbott-announces-phase-two-to-open-texas
+        ('05-25', "Memorial Day"),
         ('05-29', "Phase 3"), # https://www.bizjournals.com/dallas/news/2020/05/29/phase-2-reopening.html
         ('05-30', "BLM Protests Start"), 
     ],
     "MA": [
         ('05-18', "Phase 1"), # https://www.msn.com/en-us/news/us/a-look-at-what-can-reopen-in-each-phase-of-massachusetts-opening-plan/ar-BB14fS5B
+        ('05-25', "Memorial Day"),
         ('05-30', "BLM Protests Start"), 
         ('06-08', "Phase 2"), # https://www.masslive.com/coronavirus/2020/06/massachusetts-to-enter-phase-2-of-reopening-plan-on-monday-june-8.html
     ],
     "GA": [
         ('04-24', "Reopens"), # https://www.businessinsider.com/georgia-to-open-gyms-nail-salons-bowling-alleys-and-more-on-friday-2020-4?op=1
+        ('05-25', "Memorial Day"),
         ('05-30', "BLM Protests Start"), 
     ],
     "MI": [
         ('05-07', "Phase 3"), # https://www.mlive.com/public-interest/2020/05/michigan-is-in-phase-3-of-6-in-coronavirus-response-and-recovery-governor-says.html
+        ('05-25', "Memorial Day"),
         ('05-26', "Phase 4"), # average - https://www.lansingstatejournal.com/story/news/2020/05/18/reopen-michigan-whitmer-coronavirus-restaurant-bars-retail-phase-safe-start/5215855002/, https://www.freep.com/story/news/local/michigan/2020/05/21/coronavirus-michigan-reopening-whitmer-retail-auto-dental/5235512002/, https://www.clickondetroit.com/news/local/2020/06/01/michigans-reopening-reaches-phase-4-heres-the-next-stage-and-what-it-will-take-to-get-there/
         ('05-30', "BLM Protests Start"), 
     ],
     "NJ": [
         ('05-18', "Beaches Open"), # https://www.inquirer.com/things-to-do/jersey-shore/new-jersey-beaches-shore-beach-coronavirus-social-distancing-20200507.html
+        ('05-25', "Memorial Day"),
         ('05-30', "BLM Protests Start"),
     ]
 }
