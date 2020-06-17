@@ -1,2 +1,5 @@
+matplotlib==3.2.1
 numpy==1.18.2
-matplotlib==2.4.6
+pandas==1.0.4
+
+
