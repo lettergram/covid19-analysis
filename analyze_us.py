@@ -1,10 +1,13 @@
 import os
+import sys
 import json
 import requests
 from datetime import datetime
 import numpy as np
 from matplotlib import pyplot as plt
 from collections import defaultdict
+
+from analyze_us_prior_flu_deaths import excess_deaths_by_state
 
 # From covidtracking.com
 url = 'https://covidtracking.com/api/states/daily'
@@ -312,6 +315,15 @@ plt.savefig('graphs/us-deaths-by-state.png',
 plt.show()
 
 
+# OF FORM:
+#  state_deaths[state] = {
+#      'deaths': deaths,
+#      'deaths_above_1_std': deaths_above_1_std,
+#      'weeks_normalized': normalized.tolist(),
+#      'weeks_end': week_ends
+#  }                                                        
+deaths_by_state = excess_deaths_by_state()
+
 
 # Graphs overlay for one State
 
@@ -419,11 +431,47 @@ for state in annotated_states.keys():
             sum(state_deaths[-days:]) / len(state_deaths[-days:])
         )
 
+
+    # UNCONFIRMED COVID DEATHS
+    i, normalized_deaths = 0, []
+    deaths_above_1_std = []
+    for date in dates[state][start:]:
+
+        weeks_end_date = deaths_by_state[state]['weeks_end'][-1]
+        weeks_end_date = '-'.join(weeks_end_date.split('/')[0:2])
+
+        if int(date.replace("-", "")) <= int(weeks_end_date.replace("-", "")):
+            weeks_end_date = deaths_by_state[state]['weeks_end'][i]
+            weeks_end_date = '-'.join(weeks_end_date.split('/')[0:2])
+
+        if int(date.replace("-", "")) > int(weeks_end_date.replace("-", "")):
+            i+=1
+                
+
+        if len(deaths_by_state[state]['weeks_normalized']) > i:
+            normalized_deaths.append(
+                deaths_by_state[state]['weeks_normalized'][i])
+            deaths_above_1_std.append(
+                deaths_by_state[state]['weeks_deaths'][i] / max_state_deaths
+            )
+        else:
+            normalized_deaths.append(0)
+            deaths_above_1_std.append(0)
+            
+    total_deaths = int(deaths_by_state[state]['deaths'])
+    # deaths_above_1_std = deaths_by_state[state]['deaths_above_1_std'].sum()
+                
         
     ax.plot(dates[state][start:], state_pos_avg[state][start:],
             label='Positives, '+str(days)+' Day Avg', color="blue")
     ax.plot(dates[state][start:], state_deaths_avg[start:],
             label='Deaths ('+str(days)+' Day Avg)', color="green")
+
+    ax.plot(dates[state][start:],
+            normalized_deaths, # deaths_above_1_std,
+            label='Deaths Over Norm: '+f'{total_deaths:,}',
+            color="red")
+
     ax.plot(dates[state][start:], state_pos[state][start:],
             label='Positives: '+f'{state_test_totals[state]:,}',
             color="blue", alpha=0.6, linestyle='dotted')
