@@ -458,7 +458,7 @@ for state in annotated_states.keys():
             normalized_deaths.append(0)
             deaths_above_1_std.append(0)
             
-    total_deaths = int(deaths_by_state[state]['deaths'])
+    total_deaths = int(deaths_by_state[state]['weeks_deaths'].sum())
     # deaths_above_1_std = deaths_by_state[state]['deaths_above_1_std'].sum()
                 
         
