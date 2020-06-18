@@ -387,6 +387,8 @@ annotated_states = {
     ]
 }
 
+start = 0
+
 state_pos = {}
 state_pos_avg = {}
 for state in annotated_states.keys():

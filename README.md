@@ -37,6 +37,7 @@ python3 analyze-italy.py
 
 Total Cases: https://www.cdc.gov/coronavirus/2019-ncov/cases-updates/total-cases-onset.json
 Total New Cases: https://www.cdc.gov/coronavirus/2019-ncov/cases-updates/us-cases-epi-chart.json
+Excess Deaths: https://www.cdc.gov/nchs/nvss/vsrr/covid19/excess_deaths.htm
 
 ## COVID Tracking
 
