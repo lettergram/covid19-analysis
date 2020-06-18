@@ -387,7 +387,7 @@ annotated_states = {
     ]
 }
 
-start = 0
+start = 40
 
 state_pos = {}
 state_pos_avg = {}
