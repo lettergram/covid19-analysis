@@ -28,10 +28,14 @@ python3 analyze-italy.py
 ![Ratios in Italy](/graphs/italy-test-ratios.png)
 
 ### Counts in US
-![Counts in Italy](/graphs/us-counts.png)
+![Counts in US](/graphs/us-counts.png)
 
 ### Positive Ratio in US
-![Raiots in Italy](/graphs/us-test-ratios.png)
+![Ratios in US](/graphs/us-test-ratios.png)
+
+### State Statistics (Forlida)
+![State Statistics](/graphs/us-stats-in-FL.png)
+
 
 ## CDC Numbers
 
