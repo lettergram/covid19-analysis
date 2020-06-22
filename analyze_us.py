@@ -9,6 +9,9 @@ from collections import defaultdict
 
 from analyze_us_prior_flu_deaths import excess_deaths_by_state
 
+# Set the size of the plot
+plt.rcParams["figure.figsize"] = (12,9)
+
 # From covidtracking.com
 url = 'https://covidtracking.com/api/states/daily'
 
@@ -102,7 +105,9 @@ for state in pos_dict:
         neg_prior = negatives
         hos_prior = hospitalized
 
-        # print(state, date, test_count)
+        if state == 'US':
+            print(state, date, positives,
+                  test_count, positives / test_count)
 
 
 start = 65
@@ -124,11 +129,13 @@ ax.set_xticks(np.round(np.linspace(xmin, xmax, N), 2))
 plt.title("U.S. Tests, Positives, Deaths and Hospitalizations")
 plt.xlabel("date")
 plt.ylabel("count")
+plt.ylim((0, max(new_tests[state])))
 plt.legend()
 fig.autofmt_xdate()
 plt.tight_layout()
+
 plt.savefig('graphs/us-counts.png',
-            dpi=150.0, bbox_inches='tight')
+            dpi=250.0, bbox_inches='tight')
 plt.show()
 
 
@@ -155,7 +162,7 @@ plt.legend()
 fig.autofmt_xdate()
 plt.tight_layout()
 plt.savefig('graphs/us-counts-log.png',
-            dpi=150.0, bbox_inches='tight')
+            dpi=250.0, bbox_inches='tight')
 plt.show()
 
 
@@ -173,14 +180,13 @@ ax.set_xticks(np.round(np.linspace(xmin, xmax, N), 2))
 plt.title("U.S. Ratio of Positive Test Results")
 plt.xlabel("date")
 plt.ylabel("positive test percentage")
+plt.ylim((0, 1.05*max(positive_ratio[state][start:])))
 plt.legend()
 fig.autofmt_xdate()
 plt.tight_layout()
 plt.savefig('graphs/us-test-ratios.png',
-            dpi=150.0, bbox_inches='tight')
+            dpi=250.0, bbox_inches='tight')
 plt.show()
-
-
 
 
 # Calculates Testing by U.S. State
@@ -210,9 +216,14 @@ state_test_totals['remaining'] = sum(new_tests['remaining'])
 
 
 # Graphs Testing by U.S. State
+max_tests = 0
 fig, ax = plt.subplots()
 # top[1:] excludes US total
 for state in top[1:] + ['remaining']:
+    # Select highest test counts
+    if max(new_tests[state][start:]) > max_tests:
+        max_tests = 1.05*max(new_tests[state][start:])
+        
     ax.plot(dates[state][start:], new_tests[state][start:],
             label=state+' tests ('+f'{state_test_totals[state]:,}'+')')
 
@@ -223,20 +234,23 @@ ax.set_xticks(np.round(np.linspace(xmin, xmax, N), 2))
 plt.title("Testing by U.S. State")
 plt.xlabel("date")
 plt.ylabel("count")
+plt.ylim((0, max_tests))
 plt.legend()
 fig.autofmt_xdate()
 plt.tight_layout()
 plt.savefig('graphs/us-tests-by-state.png',
-            dpi=150.0, bbox_inches='tight')
+            dpi=250.0, bbox_inches='tight')
 plt.show()
-
 
 
 # Graphs Testing by U.S. State, LOG
 fig, ax = plt.subplots()
 ax.set_yscale('log')
+max_tests = 0
 # top[1:] excludes US total
 for state in top[1:] + ['remaining']:
+    if max_tests < max(new_tests[state][start:]):
+        max_tests = max(new_tests[state][start:])
     ax.plot(dates[state][start:], new_tests[state][start:],
             label=state+' tests ('+f'{state_test_totals[state]:,}'+')')
 
@@ -247,21 +261,24 @@ ax.set_xticks(np.round(np.linspace(xmin, xmax, N), 2))
 plt.title("Testing by U.S. State")
 plt.xlabel("date")
 plt.ylabel("count")
+plt.ylim((0, max_tests))
 plt.legend()
 fig.autofmt_xdate()
 plt.tight_layout()
 plt.savefig('graphs/us-tests-by-state-log.png',
-            dpi=150.0, bbox_inches='tight')
+            dpi=250.0, bbox_inches='tight')
 plt.show()
 
 
 # Testing ratio graphs
 fig, ax = plt.subplots()
-
+max_ratios = 0
 # IGNORE FIRST 10 DAYS (not enough testing)
 for state in top + ['US']:
     avg_ratio = round(sum(positive_ratio[state][start:])
                       / len(positive_ratio[state][start:]), 3)
+    if max(positive_ratio[state][start:]) > max_ratios:
+         max_ratios = max(positive_ratio[state][start:])
     ax.plot(dates[state][start:], positive_ratio[state][start:],
             label=state+' (Ratio: '+f'{avg_ratio}' +
             ', Tests: ' + f'{state_test_totals[state]:,}' +')')
@@ -272,11 +289,12 @@ ax.set_xticks(np.round(np.linspace(xmin, xmax, N), 2))
 plt.title("U.S. State Ratio of Positive Test Results")
 plt.xlabel("date")
 plt.ylabel("positive test percentage")
+plt.ylim((0, max_ratios))
 plt.legend()
 fig.autofmt_xdate()
 plt.tight_layout()
 plt.savefig('graphs/us-test-ratios-by-state.png',
-            dpi=150.0, bbox_inches='tight')
+            dpi=250.0, bbox_inches='tight')
 plt.show()
 
 
@@ -290,13 +308,17 @@ top = []
 state_death_totals = {}
 for state, total_deaths in top_deaths[:split]:
     top.append(state)
+         
 # Transfer all totals in dict
 for state, total_deaths in top_deaths:
     state_death_totals[state] = total_deaths
-    
+
+max_deaths = 0
 fig, ax = plt.subplots()
 # top[1:] excludes US total
 for state in top[1:]:
+    if max(new_deaths[state]) > max_deaths:
+        max_deaths = 1.05*max(new_deaths[state][start:])
     ax.plot(dates[state][start:], new_deaths[state][start:],
             label=state+' deaths ('+f'{state_death_totals[state]:,}'+')')
 
@@ -307,11 +329,12 @@ ax.set_xticks(np.round(np.linspace(xmin, xmax, N), 2))
 plt.title("Deaths by U.S. State")
 plt.xlabel("date")
 plt.ylabel("deaths")
+plt.ylim((0, max_deaths))
 plt.legend()
 fig.autofmt_xdate()
 plt.tight_layout()
 plt.savefig('graphs/us-deaths-by-state.png',
-            dpi=150.0, bbox_inches='tight')
+            dpi=250.0, bbox_inches='tight')
 plt.show()
 
 
@@ -391,7 +414,7 @@ annotated_states = {
     ]
 }
 
-start = 40
+start = 70
 
 state_pos = {}
 state_pos_avg = {}
@@ -518,9 +541,10 @@ for state in annotated_states.keys():
     plt.title("Stats in " + state)
     plt.xlabel("date")
     plt.ylabel("normalized trends")
+    # plt.ylim((0, max_tests))
     plt.legend()
     fig.autofmt_xdate()
     plt.tight_layout()
     plt.savefig('graphs/us-stats-in-'+state+'.png',
-                dpi=150.0, bbox_inches='tight')
+                dpi=250.0, bbox_inches='tight')
     plt.show()
