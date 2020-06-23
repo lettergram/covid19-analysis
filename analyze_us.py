@@ -435,10 +435,12 @@ for state in annotated_states.keys():
         state_pos_avg[state].append(
             sum(state_pos[state][-days:]) / len(state_pos[state][-days:])
         )
+    state_positives_total = sum(new_positives[state])
 
     # HOSPTIALIZED
     state_hos = []
     max_state_hos = max(new_hospitalized[state])
+    state_hospitalized_total = 0
     if max_state_hos > 0:
         for i in range(len(new_hospitalized[state])):
             new_hos_ratio = 0.0
@@ -458,6 +460,19 @@ for state in annotated_states.keys():
         state_deaths.append(new_death_ratio)
         state_deaths_avg.append(
             sum(state_deaths[-days:]) / len(state_deaths[-days:])
+        )
+
+    # TESTS
+    state_tests = []
+    state_tests_avg = []
+    max_state_tests = max(new_tests[state])
+    for i in range(len(new_tests[state])):
+        new_tests_ratio = 0.0
+        if max_state_tests > 0:
+            new_tests_ratio = new_tests[state][i] / max_state_tests
+        state_tests.append(new_tests_ratio)
+        state_tests_avg.append(
+            sum(state_tests[-days:]) / len(state_tests[-days:])
         )
 
 
@@ -502,11 +517,16 @@ for state in annotated_states.keys():
             color="red")
 
     ax.plot(dates[state][start:], state_pos[state][start:],
-            label='Positives: '+f'{state_test_totals[state]:,}',
+            label='Positives: '+f'{state_positives_total:,}',
             color="blue", alpha=0.6, linestyle='dotted')
     ax.plot(dates[state][start:], state_deaths[start:],
             label='Deaths: '+f'{state_death_totals[state]:,}',
-            color="green", alpha=0.6, linestyle='dotted')    
+            color="green", alpha=0.6, linestyle='dotted')
+
+    ax.plot(dates[state][start:], state_tests[start:],
+            label='Tests: '+f'{state_test_totals[state]:,}',
+            color="purple", alpha=0.6, linestyle='dotted')
+        
     if max_state_hos > 0:
         ax.plot(dates[state][start:], state_hos[start:],
                 label='Hospitalized: '+f'{state_hospitalized_total:,}',
@@ -541,7 +561,7 @@ for state in annotated_states.keys():
     plt.title("Stats in " + state)
     plt.xlabel("date")
     plt.ylabel("normalized trends")
-    # plt.ylim((0, max_tests))
+    plt.ylim((0, 1.1))
     plt.legend()
     fig.autofmt_xdate()
     plt.tight_layout()
