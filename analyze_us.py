@@ -359,6 +359,7 @@ annotated_states = {
         ('05-25', "Memorial Day"),
         ('05-30', "BLM Protests Start"), 
         ('06-08', "Phase 1"), # https://www.governor.ny.gov/news/governor-cuomo-announces-new-york-city-enter-phase-1-reopening-june-8-and-five-regions-enter
+        ('06-24', "Phase 2"), # https://www.washingtontimes.com/news/2020/jun/23/bill-de-blasio-justice-department-spar-over-new-yo/
     ],
     "CA": [
         ('04-27', "Phase 0"), # https://covid19.ca.gov/roadmap/
@@ -372,14 +373,15 @@ annotated_states = {
         ('05-05', "Phase 2"), # https://www.ksdk.com/article/news/health/coronavirus/illinois-reopening-plan-regions/63-c8fb6b2e-9de7-4193-a2b3-be3a4a7a3c3b
         ('05-25', "Memorial Day"),
         ('05-29', "Phase 3"), # https://www.nbcchicago.com/news/local/illinois-phase-3-how-businesses-will-reopen-and-what-you-will-be-allowed-to-do/2278083/
-        ('05-30', "BLM Protests Start"), 
+        ('05-30', "BLM Protests Start"),
+        ('06-26', "Phase 4"), # https://www.msn.com/en-us/news/us/daywatch-illinois-to-enter-phase-4-on-friday-protests-impact-on-coronavirus-in-chicago-and-laurence-holmes-must-listen-radio/ar-BB15RQs1
     ],
     "FL": [
         ('05-01', "Phase 1"), # https://www.baynews9.com/fl/tampa/coronavirus/2020/05/01/taking-a-look-at-floridas-phase-2-reopening
         ('05-25', "Memorial Day"),
         ('05-30', "BLM Protests Start"), 
         ('06-02', "Phase 2"), # https://www.news-press.com/story/news/local/2020/06/04/desantis-phase-2-reopen-florida-what-means/5258774002/
-        ('06-05', "phase 3"), # https://www.msn.com/en-us/video/peopleandplaces/florida-enters-phase-3-on-friday/vi-BB150bdt
+        ('06-05', "Phase 3"), # https://www.msn.com/en-us/video/peopleandplaces/florida-enters-phase-3-on-friday/vi-BB150bdt
     ],
     "TX": [
         ('05-01', "Phase 1"), # https://gov.texas.gov/news/post/governor-abbott-announces-phase-one-to-open-texas-establishes-statewide-minimum-standard-health-protocols
