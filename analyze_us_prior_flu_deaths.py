@@ -24,14 +24,14 @@ def pnumonia_mortality():
     state_avgs = {}
     years = ['2018', '2017', '2016', '2015', '2014']
     for state in deaths_per_year[years[0]].keys():
-        print("")
+        #print("")
         total = 0
         state_avgs[state] = []
         for year in years:
-            print(state, year, deaths_per_year[year][state])
+            #print(state, year, deaths_per_year[year][state])
             state_avgs[state].append(deaths_per_year[year][state])
         avg = sum(state_avgs[state]) / len(state_avgs[state])
-        print("AVERAGE: ", avg, "\n----------------\n")
+        #print("AVERAGE: ", avg, "\n----------------\n")
 
 
         
@@ -108,9 +108,9 @@ def excess_deaths_by_state():
         
         df_covid_week.loc[df_covid_week['State']==state, 'normalized_diff'] = vec
 
-    # Print the table out
-    with pd.option_context('display.max_rows', None, 'display.max_columns', 20):
-        print(df_covid_week.to_string())
+    ## Print the table out
+    #with pd.option_context('display.max_rows', None, 'display.max_columns', 20):
+    #    print(df_covid_week.to_string())
     
     state_deaths = {}
     for state in df_covid_week['State'].unique():

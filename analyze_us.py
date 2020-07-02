@@ -275,12 +275,11 @@ fig, ax = plt.subplots()
 max_ratios = 0
 # IGNORE FIRST 10 DAYS (not enough testing)
 for state in top + ['US']:
-    avg_ratio = round(sum(positive_ratio[state][start:])
-                      / len(positive_ratio[state][start:]), 3)
+    curr_ratio = round(positive_ratio[state][start:][-1], 3)
     if max(positive_ratio[state][start:]) > max_ratios:
          max_ratios = max(positive_ratio[state][start:])
     ax.plot(dates[state][start:], positive_ratio[state][start:],
-            label=state+' (Ratio: '+f'{avg_ratio}' +
+            label=state+' (Ratio: '+f'{curr_ratio}' +
             ', Tests: ' + f'{state_test_totals[state]:,}' +')')
 N = 8
 xmin, xmax = ax.get_xlim()
