@@ -92,9 +92,13 @@ for state in pos_dict:
 
         p_ratio, d_ratio, h_ratio = 0.0, 0.0, 0.0
         if new_tests[state][-1] > 0:
-            p_ratio = positives / test_count
-            d_ratio = deaths / test_count
-            h_ratio = hospitalized / test_count
+            p = positives - pos_prior # daily 
+            t = test_count - tests_prior # daily
+            d = deaths - death_prior # daily
+            h = hospitalized - hos_prior # daily
+            p_ratio = p / t
+            d_ratio = d / t
+            h_ratio = h / t
         positive_ratio[state].append(p_ratio)
         death_ratio[state].append(d_ratio)
         hospitalized_ratio[state].append(h_ratio)
@@ -108,7 +112,6 @@ for state in pos_dict:
         if state == 'US':
             print(state, date, positives,
                   test_count, positives / test_count)
-
 
 start = 65
 
