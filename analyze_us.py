@@ -364,7 +364,7 @@ annotated_states = {
         ('06-24', "Phase 2"), # https://www.washingtontimes.com/news/2020/jun/23/bill-de-blasio-justice-department-spar-over-new-yo/
         ('07-04', '4th of July'),
         ('07-05', 'Phase 3'), # https://www.marketwatch.com/story/no-indoor-dining-when-new-york-city-reaches-phase-3-next-monday-2020-07-01
-        
+        ('07-22', 'Phase 4'), # https://www.msn.com/en-us/news/us/road-to-reopening-new-york-city-set-to-enter-phase-4-monday/ar-BB16VWuE
     ],
     "CA": [
         ('04-27', "Phase 0"), # https://covid19.ca.gov/roadmap/
