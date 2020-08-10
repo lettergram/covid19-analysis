@@ -17,13 +17,48 @@ end_week = week_series[week_series.last_valid_index()]
 
 print(start_week, end_week)
 
-deaths_by_years = df.replace({'Under 25 years': ' 0-25 years', '85 years and older': '85+   years'}).where(df['Week'] >= start_week).where(df["Week"] <= end_week).groupby(['Year', 'Age Group']).sum().reset_index().drop(columns=['index', 'Week'])
+us_index = df[df['State Abbreviation'] == 'US'].index
+df.drop(us_index, inplace=True)
 
-deaths_by_group = pd.DataFrame(deaths_by_years, columns=['Age Group', 'Number of Deaths'])
+deaths_by_years = df.replace(
+    {'Under 25 years': ' 0-25 years', '85 years and older': '85+   years'}).where(
+        df['Week'] >= start_week
+    )
+
+pd.set_option('display.max_rows', None)
+print(deaths_by_years.where(df['Year']==2019).dropna(how='all')[
+    ['State Abbreviation', 'Week', 'Number of Deaths']])
+print("\n-------------------\n")
+print(deaths_by_years.where(df['Year']==2019).dropna(how='all')[['State Abbreviation', 'Week', 'Number of Deaths']])
+print("\n-------------------\n")
+print(deaths_by_years.where(df['Year']==2019).dropna(how='all').groupby(['State Abbreviation'])[['Number of Deaths']])
+print("\n-------------------\n")
+print(deaths_by_years.where(df['Year']==2019).where(df['Week']==1.0).dropna(how='all')[['State Abbreviation', 'Jurisdiction', 'Age Group', 'Week', 'Number of Deaths']])
+print("\n-------------------\n")
+print(deaths_by_years.where(df['Year']==2019).dropna(how='all').groupby(['Week']).sum()[
+    ['Number of Deaths']])
+print("\n-------------------\n")
+
+deaths_by_years = deaths_by_years.where(
+        df["Week"] <= end_week
+    ).groupby(
+        ['Year', 'Age Group']
+    ).sum().reset_index().drop(columns=['index', 'Week'])
+
+print(deaths_by_years)
+print("\n-------------------\n")
+print()
+
+deaths_by_group = pd.DataFrame(deaths_by_years,
+                               columns=['Year', 'Age Group', 'Number of Deaths'])
 
 print(deaths_by_group)
 
-deaths_by_group.plot(x='Age Group', y='Number of Deaths', kind='bar')
+
+# deaths_by_group.plot(x='Age Group', columns=['Year', 'Number of Deaths'], kind='bar')
+deaths_by_group.set_index(['Age Group'], inplace=True)
+deaths_by_group.plot.bar();
+
 plt.show()
 
 print("\n\n--------------------------------------------\n\n")
@@ -36,12 +71,28 @@ print("\n")
 deaths_pre_2020 = deaths_by_years.where(deaths_by_years['Year']!=2020)
 std_years = deaths_pre_2020.std(axis=0, skipna=True)
 
-deaths_2019 = deaths_pre_2020.where(deaths_pre_2020['Year']==2019).groupby(['Year']).sum()['Number of Deaths'].mean()
-deaths_2020 = deaths_by_years.where(deaths_by_years['Year']==2020).groupby(['Year']).sum()['Number of Deaths'].mean()
+print("std", std_years)
 
-deaths_avg_std_pre_2020 = deaths_pre_2020.groupby(['Year']).sum()['Number of Deaths'].mean() + std_years['Number of Deaths']
-deaths_avg_68_std_pre_2020 = deaths_pre_2020.groupby(['Year']).sum()['Number of Deaths'].mean() + 0.68*std_years['Number of Deaths']
+deaths_2019 = deaths_pre_2020.where(
+    deaths_pre_2020['Year']==2019).groupby(
+        ['Year']
+    ).sum()['Number of Deaths'].mean()
 
-print('2020 Deaths 1 STD above 5 year avg: {:8,.2f}'.format(deaths_2020 - deaths_avg_std_pre_2020))
-print('2020 Deaths 0.68 STD above 5 year avg: {:8,.2f}'.format(deaths_2020 - deaths_avg_68_std_pre_2020))
+deaths_2020 = deaths_by_years.where(
+    deaths_by_years['Year']==2020).groupby(
+        ['Year']
+    ).sum()['Number of Deaths'].mean()
+
+deaths_avg_std_pre_2020 = deaths_pre_2020.groupby(
+    ['Year']).sum()['Number of Deaths'].mean() + std_years['Number of Deaths']
+
+deaths_avg_68_std_pre_2020 = deaths_pre_2020.groupby(
+    ['Year']).sum()['Number of Deaths'].mean() + 0.68*std_years['Number of Deaths']
+
+print('2020 Deaths 1 STD above 5 year avg: {:8,.2f}'.format(
+    deaths_2020 - deaths_avg_std_pre_2020))
+
+print('2020 Deaths 0.68 STD above 5 year avg: {:8,.2f}'.format(
+    deaths_2020 - deaths_avg_68_std_pre_2020))
+
 print('2020 Deaths Over 2019: {:8,.2f}'.format(deaths_2020 - deaths_2019))

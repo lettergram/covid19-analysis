@@ -365,6 +365,7 @@ annotated_states = {
         ('07-04', '4th of July'),
         ('07-05', 'Phase 3'), # https://www.marketwatch.com/story/no-indoor-dining-when-new-york-city-reaches-phase-3-next-monday-2020-07-01
         ('07-22', 'Phase 4'), # https://www.msn.com/en-us/news/us/road-to-reopening-new-york-city-set-to-enter-phase-4-monday/ar-BB16VWuE
+        ('09-04', 'School Opens'), # https://nycschoolcalendars.com/new-york-city-school-district/2020-2021
     ],
     "CA": [
         ('04-27', "Phase 0"), # https://covid19.ca.gov/roadmap/
@@ -375,6 +376,7 @@ annotated_states = {
         ('06-12', "Phase 3"), # https://www.actionnewsnow.com/content/news/Phase-3-of-California-reopening-whats-open-571219961.html
         ('07-01', "Close Indoor, Again"), # https://covid19.ca.gov/roadmap-counties/
         ('07-04', '4th of July'),
+        
     ],
     "IL": [
         ('05-05', "Phase 2"), # https://www.ksdk.com/article/news/health/coronavirus/illinois-reopening-plan-regions/63-c8fb6b2e-9de7-4193-a2b3-be3a4a7a3c3b
@@ -383,6 +385,7 @@ annotated_states = {
         ('05-30', "BLM Protests Start"),
         ('06-26', "Phase 4"), # https://www.msn.com/en-us/news/us/daywatch-illinois-to-enter-phase-4-on-friday-protests-impact-on-coronavirus-in-chicago-and-laurence-holmes-must-listen-radio/ar-BB15RQs1
         ('07-04', '4th of July'),
+        ('08-15', 'Schools Partial Reopen') # https://publicholidays.us/school-holidays/illinois/
     ],
     "FL": [
         ('05-01', "Phase 1"), # https://www.baynews9.com/fl/tampa/coronavirus/2020/05/01/taking-a-look-at-floridas-phase-2-reopening
@@ -392,6 +395,7 @@ annotated_states = {
         ('06-05', "Phase 3"), # https://www.msn.com/en-us/video/peopleandplaces/florida-enters-phase-3-on-friday/vi-BB150bdt
         ('07-03', 'Beach Closures'), # https://www.foxnews.com/transcript/florida-counties-announce-beach-closures-curfews-after-record-high-covid-19-spike
         ('07-04', '4th of July'),
+        ('08-05', 'Schools Partial Reopen'), # https://www.wptv.com/news/education/back-to-school/west-palm-beach-private-school-to-have-kids-back-in-classrooms-wednesday
     ],
     "TX": [
         ('05-01', "Phase 1"), # https://gov.texas.gov/news/post/governor-abbott-announces-phase-one-to-open-texas-establishes-statewide-minimum-standard-health-protocols
@@ -400,6 +404,7 @@ annotated_states = {
         ('05-30', "BLM Protests Start"),
         ('06-03', "Phase 3"), # https://www.bizjournals.com/dallas/news/2020/05/29/phase-2-reopening.html
         ('07-04', '4th of July'),
+        ('09-08', 'Schools Open In Person'), # https://talk1370.radio.com/articles/list-central-texas-school-district-back-to-school-plans
         
     ],
     "MA": [
@@ -409,12 +414,14 @@ annotated_states = {
         ('06-08', "Phase 2"), # https://www.masslive.com/coronavirus/2020/06/massachusetts-to-enter-phase-2-of-reopening-plan-on-monday-june-8.html
         ('07-04', '4th of July'),
         ('07-05', 'Phase 3'), # https://www.masslive.com/coronavirus/2020/07/massachusetts-to-allow-casinos-gyms-museums-to-reopen-as-early-as-monday-as-state-moves-into-phase-3-of-reopening.html
+        ('09-10', 'Shools Reopen'), # https://www.bostonglobe.com/2020/08/09/metro/boston-schools-should-not-reopen-sept-10/
     ],
     "GA": [
         ('04-24', "Reopens"), # https://www.businessinsider.com/georgia-to-open-gyms-nail-salons-bowling-alleys-and-more-on-friday-2020-4?op=1
         ('05-25', "Memorial Day"),
         ('05-30', "BLM Protests Start"),
         ('07-04', '4th of July'),
+        ('08-12' 'Schools Reopen'), # https://www.wsbtv.com/news/local/county-by-county-plans-returning-school-this-fall/QJAYLUB4TFBPBCJCIMVZXUQGFY/
     ],
     "MI": [
         ('05-07', "Phase 3"), # https://www.mlive.com/public-interest/2020/05/michigan-is-in-phase-3-of-6-in-coronavirus-response-and-recovery-governor-says.html
@@ -422,6 +429,7 @@ annotated_states = {
         ('05-30', "BLM Protests Start"),
         ('06-01', "Phase 4"), # https://www.michigan.gov/coronavirus/0,9753,7-406-98163-530627--,00.html apverage - https://www.lansingstatejournal.com/story/news/2020/05/18/reopen-michigan-whitmer-coronavirus-restaurant-bars-retail-phase-safe-start/5215855002/, https://www.freep.com/story/news/local/michigan/2020/05/21/coronavirus-michigan-reopening-whitmer-retail-auto-dental/5235512002/, https://www.clickondetroit.com/news/local/2020/06/01/michigans-reopening-reaches-phase-4-heres-the-next-stage-and-what-it-will-take-to-get-there/
         ('07-04', '4th of July'),
+        ('08-24', 'Schools Partial Reopen'), # https://publicholidays.us/school-holidays/michigan/
     ],
     "NJ": [
         ('05-18', "Beaches Open"), # https://www.inquirer.com/things-to-do/jersey-shore/new-jersey-beaches-shore-beach-coronavirus-social-distancing-20200507.html
