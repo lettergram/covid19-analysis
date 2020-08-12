@@ -23,7 +23,7 @@ df.drop(us_index, inplace=True)
 
 # Drop type duplicates due to predicted weighting (same as unweighted in dataset)
 # Decided to keep weighted
-df.drop(df[df['Type']=='unweighted'].index, inplace=True)
+df.drop(df[df['Type']=='Unweighted'].index, inplace=True)
 
 deaths_by_years = df.replace(
     {'Under 25 years': ' 0-25 years', '85 years and older': '85+   years'}).where(
@@ -240,7 +240,7 @@ print('2020 Deaths 1 STD above 5 year avg: {:8,.2f}'.format(
 print('2020 Deaths 0.68 STD above 5 year avg: {:8,.2f}'.format(
     deaths_2020 - deaths_avg_68_std_pre_2020))
 
-print('2020 Deaths Regression Prediction(s): {:8,.2f}'.format(
+print('2020 Deaths Over Regression Prediction(s): {:8,.2f}'.format(
     deaths_2020 - predicted_deaths))
 
 print('2020 Deaths Over 2019: {:8,.2f}'.format(deaths_2020 - deaths_2019))
