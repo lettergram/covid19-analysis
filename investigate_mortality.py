@@ -32,14 +32,18 @@ deaths_by_years = df.replace(
 
 # General information to print out, helpful for debugging
 print("\n-------------------\n")
-print(deaths_by_years.where(df['Year']==2020).where(df['Week']==20).dropna(how='all').where(df['State Abbreviation']=='AL').dropna(how='all')[
-    ['Year', 'State Abbreviation', 'Jurisdiction',
-     'Age Group', 'Week', 'Number of Deaths', 'Type']])
+print(deaths_by_years.where(df['Year']==2020).where(
+    df['Week']==20).dropna(how='all').where(
+        df['State Abbreviation']=='AL').dropna(how='all')[
+            ['Year', 'State Abbreviation', 'Jurisdiction',
+             'Age Group', 'Week', 'Number of Deaths', 'Type']
+        ])
 
 print(deaths_by_years.where(df['Year']==2019).where(
     df['Week']<=end_week).dropna(how='all')['Number of Deaths'].sum())
 
 print("\n-------------------\n")
+
 
 # Plot year after year
 deaths_by_week = deaths_by_years.dropna(how='all').groupby(['Year', 'Week']).sum()[['Number of Deaths']]
@@ -100,6 +104,7 @@ plt.savefig('graphs/us-deaths-by-week-of-year.png',
 plt.show()
 
 
+
 print("\n-------------------\n")
 
 deaths_by_years = deaths_by_years.where(
@@ -116,6 +121,7 @@ deaths_by_group = pd.DataFrame(deaths_by_years,
                                columns=['Year', 'Age Group', 'Number of Deaths'])
 
 
+# Bar graph by age group
 fig, ax = plt.subplots(figsize=(12, 8))
 years = deaths_by_group['Year'].unique().astype(int)
 age_groups = deaths_by_group['Age Group'].unique()
@@ -125,11 +131,31 @@ bar_width = 0.15
 plt.set_cmap('Oranges_r')
 
 count = 1
+prior = None
+mask = np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+percent_change = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 for year in years:
-    ax.bar(X+count*bar_width,
-           deaths_by_group.loc[
-               deaths_by_group['Year']==year, 'Number of Deaths'], 
-           width=bar_width, label=str(year))
+    print(year, deaths_by_group.loc[deaths_by_group['Year']==year, 'Number of Deaths'])
+
+    bar = ax.bar(X+count*bar_width,
+                 deaths_by_group.loc[
+                     deaths_by_group['Year']==year, 'Number of Deaths'], 
+                 width=bar_width, label=str(year))
+    
+    if prior is not None:
+        percent_change = (deaths_by_group.loc[
+            deaths_by_group['Year']==year, 'Number of Deaths'
+        ].values / prior - mask).round(3) * 100.0
+
+    for i in range(0, len(bar)):
+        rect = bar[i]
+        height = rect.get_height()
+        plt.text(rect.get_x() + rect.get_width()/2.0,
+                 height, ('%2.1f' % percent_change[i])+"%",
+                 fontsize=8, ha='center', va='bottom')
+        
+    prior = deaths_by_group.loc[deaths_by_group['Year']==year, 'Number of Deaths'].values
+        
     count += 1
 
 # Fix the x-axes.
@@ -201,6 +227,8 @@ plt.savefig('graphs/us-deaths-by-year.png',
             dpi=250.0, bbox_inches='tight')
 plt.show()
 
+deaths_in_2020 = deaths_by_years.where(
+    deaths_by_years['Year']==2020).groupby(['Year']).sum()['Number of Deaths'].values[0]
 
 # Print the table for real vs predicted 
 print('Model Score (R^2):', model.score(X, Y))
@@ -210,12 +238,11 @@ for i in range(len(X)):
           int(model.predict([[X[i][0]]])),
           int(deaths_pre_2020_yr['Number of Deaths'].values[i]))
 
+print(2020, int(model.predict([[2020]])), int(deaths_in_2020))
 
 print("\n\n==========================\n\n")
 print('\nPredicted 2020 Deaths:', predicted_deaths)
-print('Confirmed 2020 Deaths:', deaths_by_years.where(
-    deaths_by_years['Year']==2020).groupby(['Year']).sum()['Number of Deaths'].values[0],
-      '\n')
+print('Confirmed 2020 Deaths:', deaths_in_2020, '\n')
 
 deaths_2019 = deaths_pre_2020.where(
     deaths_pre_2020['Year']==2019).groupby(
