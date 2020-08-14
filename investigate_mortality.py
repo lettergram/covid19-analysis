@@ -141,7 +141,8 @@ print("\n-------------------\n")
 
 
 # Plot year after year
-deaths_by_week = deaths_by_years.dropna(how='all').groupby(['Year', 'Week']).sum()[['Number of Deaths']]
+
+deaths_by_week = deaths_by_years.dropna(how='all').groupby(['Year', 'Week']).sum()
 ax = deaths_by_week.plot.line(y='Number of Deaths')
 ax.set_ylim([min(deaths_by_week['Number of Deaths'].values)*0.92,
              max(deaths_by_week['Number of Deaths'].values)*1.08])
@@ -161,44 +162,63 @@ plt.show()
 
 
 # Overlay plot of year over year
-yearly_dict = {}
-deaths_by_week = deaths_by_week.reset_index()
-max_count, min_count = 0, 0
-# print(deaths_by_week)
-for year in deaths_by_week['Year'].unique():
-    yearly_dict[year] = deaths_by_week.where(
-        deaths_by_week['Year']==year).dropna(how='all')['Number of Deaths'].values
+state_abbreviations_plus_us = np.append(state_abbreviations, 'US')
+print(state_abbreviations_plus_us)
+
+deaths_by_week = deaths_by_years.dropna(how='all').groupby(
+    ['Year', 'Week', 'State Abbreviation']).sum().reset_index()
+
+for state_abbreviation in state_abbreviations_plus_us:
     
-    if len(yearly_dict[year]) < len(deaths_by_week['Week'].unique()):
-        pad = np.zeros(len(deaths_by_week['Week'].unique()) - len(yearly_dict[year]))
-        yearly_dict[year] = np.append(yearly_dict[year], pad)
+    yearly_dict = {}
+    max_count, min_count = 0, 999999999999
+    for year in deaths_by_week['Year'].unique():
 
-    if max(yearly_dict[year]) > max_count:
-        max_count = max(yearly_dict[year])
-    if min(yearly_dict[year]) < min_count:
-        min_count = min(yearly_dict[year])
+        yearly_dict[year] = deaths_by_week
+        if state_abbreviation != 'US':
+            yearly_dict[year] = yearly_dict[year].where(
+                deaths_by_week['State Abbreviation']==state_abbreviation
+            ).dropna(how='all')
+        else:
+            yearly_dict[year] = yearly_dict[year].groupby(
+                ['Year', 'Week']).sum().reset_index()
+
+        yearly_dict[year] = yearly_dict[year].where(           
+            yearly_dict[year]['Year']==year).dropna(how='all')['Number of Deaths'].values
+    
+        if len(yearly_dict[year]) < len(deaths_by_week['Week'].unique()):
+            pad = np.zeros(len(deaths_by_week['Week'].unique()) - len(yearly_dict[year]))
+            yearly_dict[year] = np.append(yearly_dict[year], pad)
+            
+        if max(yearly_dict[year]) > max_count:
+            max_count = max(yearly_dict[year])
+        if min(yearly_dict[year]) < min_count and int(year) != 2020:
+            min_count = min(yearly_dict[year])
         
-yearly_df = pd.DataFrame(yearly_dict, index=deaths_by_week['Week'].unique())
+    yearly_df = pd.DataFrame(yearly_dict, index=deaths_by_week['Week'].unique())
 
-ax = yearly_df.plot.line()
-ax.set_xlim([0, 52])
-ax.set_ylim([min_count*0.92, max_count*1.08])
+    ax = yearly_df.plot.line()
+    ax.set_xlim([0, 52])
+    ax.set_ylim([min_count*0.92, max_count*1.08])
+    
+    ax.set_xlabel('Week of Year')
+    ax.set_ylabel('Deaths per Week')
+    ax.set_title(state_abbreviation + ' Deaths per Week of Year')
+    
+    ax.yaxis.grid(True, color='#EEEEEE')
+    ax.xaxis.grid(False)
+    ax.set_axisbelow(True)
+    ax.tick_params(bottom=False, left=False)
+    
+    plt.tight_layout()
+    plt.savefig('graphs/cdc-derived/'+ state_abbreviation +'-deaths-by-week-of-year.png',
+                dpi=250.0, bbox_inches='tight')
 
-ax.set_xlabel('Week of Year')
-ax.set_ylabel('Deaths per Week')
-ax.set_title('U.S. Deaths per Week of Year')
-
-ax.yaxis.grid(True, color='#EEEEEE')
-ax.xaxis.grid(False)
-ax.set_axisbelow(True)
-ax.tick_params(bottom=False, left=False)
-
-plt.tight_layout()
-plt.savefig('graphs/us-deaths-by-week-of-year.png',
-            dpi=250.0, bbox_inches='tight')
-plt.show()
-
-
+    if state_abbreviation == 'US':
+        plt.show()
+    else:
+        print("Processed", state_abbreviation, "for Deaths per Week of Year")
+        plt.close()
 
 print("\n-------------------\n")
 
