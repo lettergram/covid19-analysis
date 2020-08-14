@@ -349,7 +349,6 @@ plt.show()
 #  }                                                        
 deaths_by_state = excess_deaths_by_state()
 
-
 # Graphs overlay for one State
 
 annotated_states = {
@@ -517,7 +516,6 @@ for state in annotated_states.keys():
         if int(date.replace("-", "")) > int(weeks_end_date.replace("-", "")):
             i+=1
                 
-
         if len(deaths_by_state[state]['weeks_normalized']) > i:
             normalized_deaths.append(
                 deaths_by_state[state]['weeks_normalized'][i])
@@ -544,19 +542,19 @@ for state in annotated_states.keys():
 
     ax.plot(dates[state][start:], state_pos[state][start:],
             label='Positives: '+f'{state_positives_total:,}',
-            color="blue", alpha=0.6, linestyle='dotted')
+            color="blue", alpha=0.3, linestyle='dotted')
     ax.plot(dates[state][start:], state_deaths[start:],
             label='Deaths: '+f'{state_death_totals[state]:,}',
-            color="green", alpha=0.6, linestyle='dotted')
+            color="green", alpha=0.3, linestyle='dotted')
 
     ax.plot(dates[state][start:], state_tests[start:],
             label='Tests: '+f'{state_test_totals[state]:,}',
             color="purple", alpha=0.6, linestyle='dotted')
         
-    if max_state_hos > 0:
-        ax.plot(dates[state][start:], state_hos[start:],
-                label='Hospitalized: '+f'{state_hospitalized_total:,}',
-                color="orange", alpha=0.6, linestyle='dotted')
+    #if max_state_hos > 0:
+    #    ax.plot(dates[state][start:], state_hos[start:],
+    #            label='Hospitalized: '+f'{state_hospitalized_total:,}',
+    #            color="orange", alpha=0.6, linestyle='dotted')
 
     next_phase = 0
     for x in range(start, len(dates[state])):
