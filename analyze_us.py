@@ -111,7 +111,7 @@ for state in pos_dict:
 
         if state == 'US':
             print(state, date, positives,
-                  test_count, positives / test_count)
+                  test_count, (1.0+positives) / (1.0+test_count))
 
 start = 65
 
