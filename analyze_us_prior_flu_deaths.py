@@ -102,7 +102,7 @@ def excess_deaths_by_state():
     for state in df_covid_week['State'].unique():
         state_max = df_covid_week.where(df_covid_week['State']==state)['diff'].max()
         state_min = df_covid_week.where(df_covid_week['State']==state)['diff'].min()
-    
+            
         vec = df_covid_week['diff'].where(df_covid_week['State']==state).apply(
             normalize, args=(state_max,state_min)).dropna().values
         
@@ -117,8 +117,7 @@ def excess_deaths_by_state():
         normalized = df_covid_week.where(df_covid_week['State']==state)['normalized_diff'].dropna().values
         week_ends = df_covid_week.where(df_covid_week['State']==state)['Week Ending Date'].dropna().values
         deaths_above_1_std = round(
-            df_covid_week.where(df_covid_week['State']==state)['diff'].sum(),
-            3
+            df_covid_week.where(df_covid_week['State']==state)['diff'].sum(), 3
         )
         deaths =  df_covid_week.where(df_covid_week['State']==state)['Deaths 2020'].sum()
         state_deaths[state] = {
