@@ -113,7 +113,8 @@ for state in pos_dict:
             print(state, date, positives,
                   test_count, (1.0+positives) / (1.0+test_count))
 
-start = 65
+# start = 65
+start = 0
 
 # Raw numbers country wide
 fig, ax = plt.subplots()
@@ -439,7 +440,8 @@ annotated_states = {
     ]
 }
 
-start = 70
+# start = 70
+start = 0
 
 state_pos = {}
 state_pos_avg = {}
