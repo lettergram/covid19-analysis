@@ -557,9 +557,12 @@ for state in annotated_states.keys():
             label='Deaths: '+f'{state_death_totals[state]:,}',
             color="green", alpha=0.3, linestyle='dotted')
 
-    ax.plot(dates[state][start:], state_tests[start:],
-            label='Tests: '+f'{state_test_totals[state]:,}',
-            color="purple", alpha=0.6, linestyle='dotted')
+    try:
+        ax.plot(dates[state][start:], state_tests[start:],
+                label='Tests: '+f'{state_test_totals[state]:,}',
+                color="purple", alpha=0.6, linestyle='dotted')
+    except Exception as e:
+        print(e)
         
     #if max_state_hos > 0:
     #    ax.plot(dates[state][start:], state_hos[start:],
